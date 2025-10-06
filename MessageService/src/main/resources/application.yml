@@ -1,0 +1,81 @@
+spring:
+  application:
+    name: MessageService
+
+  datasource:
+    hikari:
+      username: root
+      password: Qwerty_12345
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/messageDb
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        hbm2ddl:
+          drop_constraints: true
+    generate-ddl: true
+    open-in-view: true
+    show-sql: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9093/realms/DemoRealm
+      client:
+        registration:
+          keycloak:
+            client-id: mySpringBootClient
+            client-secret:
+            scope: openid
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9093/realms/DemoRealm
+            user-name-attribute: preferred_username
+
+  kafka:
+    bootstrap-servers: localhost:9095
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: orderServiceGroup
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    listener:
+      ack-mode: record
+
+logging:
+  level:
+    org.hibernate: warn
+    web: INFO
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, info, httptrace, prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.servers.requests]": true
+  endpoint:
+    health:
+      show-details: always
+
+server:
+  port: 8091

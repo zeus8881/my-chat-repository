@@ -1,0 +1,15 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: messageSqlContainer
+    environment:
+      MYSQL_ROOT_PASSWORD: Qwerty_12345
+      MYSQL_DATABASE: messageDb
+    ports:
+      - "3300:3306"
+    volumes:
+      - ./messageDb:/var/lib/mysql
+    restart: always
+
+volumes:
+  messageDb:
