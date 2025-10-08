@@ -1,4 +1,69 @@
 services:
+  userservice:
+    build: ./userservices
+    container_name: userservice
+    ports:
+      - "8083:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      REDIS_HOST: redis
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9095
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: microserviceDb1
+      MYSQL_ROOT_PASSWORD: Qwerty_12345
+    depends_on:
+      - mysql
+      - redis
+      - kafka
+    restart: always
+
+  chatservice:
+    build: ./ChatService
+    container_name: chatservice
+    ports:
+      - "8090:8080"
+    environment:
+      REDIS_HOST: redis
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9095
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: chatServiceDb
+      MYSQL_ROOT_PASSWORD: Qwerty_12345
+    depends_on:
+      - userservice
+      - redis
+      - kafka
+    restart: always
+
+  messageservice:
+    build: ./MessageService
+    container_name: messageservice
+    ports:
+      - "8091:8080"
+    environment:
+      REDIS_HOST: redis
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9095
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: messageDb
+      MYSQL_ROOT_PASSWORD: Qwerty_12345
+    depends_on:
+      - userservice
+      - redis
+      - kafka
+    restart: always
+
+  eurekaserver:
+    build: ./eureka-server
+    container_name: eurekaserver
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    restart: always
+
+
   mysql:
     image: mysql:8.0
     container_name: mySqlContainer
@@ -65,33 +130,32 @@ services:
       - ./redis_data:/data
     restart: always
 
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus
-    ports:
-      - "9097:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      monitoring:
+#  prometheus:
+#    container_name: prometheus
+#    image: prom/prometheus
+#    ports:
+#      - "9097:9090"
+#    volumes:
+#      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+#    networks:
+#      monitoring:
 
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_USER=user
-      - GF_SECURITY_ADMIN_PASSWORD=123
-    depends_on:
-      - prometheus
-    networks:
-      monitoring:
-
-networks:
-  monitoring:
+#  grafana:
+#    image: grafana/grafana
+#    container_name: grafana
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - GF_SECURITY_ADMIN_USER=user
+#      - GF_SECURITY_ADMIN_PASSWORD=123
+#    depends_on:
+#      - prometheus
+#    networks:
+#      monitoring:
+#
+#networks:
+#  monitoring:
 
 volumes:
-  prometheus.yml:
   mysql_data:
   redis_data:

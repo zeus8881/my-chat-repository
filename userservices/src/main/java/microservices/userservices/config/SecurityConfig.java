@@ -14,25 +14,25 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-@Configuration
-@EnableWebSecurity
-public class SecurityConfig {
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
-        http.
-                authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-                        authorizationManagerRequestMatcherRegistry.anyRequest().permitAll())
-                .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer ->
-                        httpSecurityOAuth2ResourceServerConfigurer.jwt(jwtConfigurer ->
-                                jwtConfigurer.jwtAuthenticationConverter(jwtAbstractAuthenticationTokenConverter())));
-        return http.build();
-    }
-
-    @Bean
-    public Converter<Jwt, AbstractAuthenticationToken> jwtAbstractAuthenticationTokenConverter() {
-        var converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(new JwtConverter());
-        return converter;
-    }
-
-}
+//@Configuration
+//@EnableWebSecurity
+//public class SecurityConfig {
+////    @Bean
+////    public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
+////        http.
+////                authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
+////                        authorizationManagerRequestMatcherRegistry.anyRequest().permitAll())
+////                .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer ->
+////                        httpSecurityOAuth2ResourceServerConfigurer.jwt(jwtConfigurer ->
+////                                jwtConfigurer.jwtAuthenticationConverter(jwtAbstractAuthenticationTokenConverter())));
+////        return http.build();
+////    }
+//
+//    @Bean
+//    public Converter<Jwt, AbstractAuthenticationToken> jwtAbstractAuthenticationTokenConverter() {
+//        var converter = new JwtAuthenticationConverter();
+//        converter.setJwtGrantedAuthoritiesConverter(new JwtConverter());
+//        return converter;
+//    }
+//
+//}

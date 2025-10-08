@@ -1,15 +1,15 @@
-services:
-  mysql:
-    image: mysql:8.0
-    container_name: chatSqlContainer
-    environment:
-      MYSQL_ROOT_PASSWORD: Qwerty_12345
-      MYSQL_DATABASE: chatServiceDb;
-    ports:
-      - "3301:3306"
-    volumes:
-      - ./chatServiceDb:/var/lib/mysql
-    restart: always
-
-volumes:
-  chatServiceDb:
+#services:
+#  mysql:
+#    image: mysql:8.0
+#    container_name: chatSqlContainer
+#    environment:
+#      MYSQL_ROOT_PASSWORD: Qwerty_12345
+#      MYSQL_DATABASE: chatServiceDb;
+#    ports:
+#      - "3301:3306"
+#    volumes:
+#      - ./chatServiceDb:/var/lib/mysql
+#    restart: always
+#
+#volumes:
+#  chatServiceDb:
