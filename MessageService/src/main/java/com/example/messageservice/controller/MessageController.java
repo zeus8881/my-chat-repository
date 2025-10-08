@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/messages")
-public class    MessageController {
+public class MessageController {
     public final MessageService messageService;
 
     @PostMapping("/{chatId}/send/{senderId}")
