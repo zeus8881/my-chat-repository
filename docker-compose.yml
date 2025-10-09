@@ -1,3 +1,4 @@
+
 services:
   userservice:
     build: ./userservices
@@ -58,6 +59,7 @@ services:
       - userservice
       - redis
       - kafka
+    command: ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]
     restart: always
 
   eurekaserver:
