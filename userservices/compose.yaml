@@ -1,161 +1,161 @@
-services:
-  userservice:
-    build: ./userservices
-    container_name: userservice
-    ports:
-      - "8083:8080"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      REDIS_HOST: redis
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9095
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      MYSQL_DATABASE: microserviceDb1
-      MYSQL_ROOT_PASSWORD: Qwerty_12345
-    depends_on:
-      - mysql
-      - redis
-      - kafka
-    restart: always
-
-  chatservice:
-    build: ./ChatService
-    container_name: chatservice
-    ports:
-      - "8090:8080"
-    environment:
-      REDIS_HOST: redis
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9095
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      MYSQL_DATABASE: chatServiceDb
-      MYSQL_ROOT_PASSWORD: Qwerty_12345
-    depends_on:
-      - userservice
-      - redis
-      - kafka
-    restart: always
-
-  messageservice:
-    build: ./MessageService
-    container_name: messageservice
-    ports:
-      - "8091:8080"
-    environment:
-      REDIS_HOST: redis
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9095
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      MYSQL_DATABASE: messageDb
-      MYSQL_ROOT_PASSWORD: Qwerty_12345
-    depends_on:
-      - userservice
-      - redis
-      - kafka
-    restart: always
-
-  eurekaserver:
-    build: ./eureka-server
-    container_name: eurekaserver
-    ports:
-      - "8761:8761"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-    restart: always
-
-
-  mysql:
-    image: mysql:8.0
-    container_name: mySqlContainer
-    environment:
-      MYSQL_DATABASE: microserviceDb1
-      MYSQL_ROOT_PASSWORD: Qwerty_12345
-    ports:
-      - "3302:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    restart: always
-
-  keycloak:
-    image: quay.io/keycloak/keycloak:24.0.2
-    container_name: keycloakDb1Container
-    command: start-dev
-    environment:
-      KC_DB: mysql
-      KC_DB_URL: jdbc:mysql://mysql:3306/keycloakDb1
-      KC_DB_USERNAME: root
-      KC_DB_PASSWORD: Qwerty_12345
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    ports:
-      - "9093:8080"
-    depends_on:
-      - mysql
-    restart: always
-
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    hostname: kafka
-    container_name: kafka
-    ports:
-      - "9095:9095"
-      - "9096:9096"
-    environment:
-      KAFKA_KRAFT_MODE: "true"
-      KAFKA_PROCESS_ROLES: controller, broker
-      KAFKA_NODE_ID: 1
-      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9096
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9095, CONTROLLER://0.0.0.0:9096
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT, CONTROLLER:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9095
-      KAFKA_LOG_DIRS: /var/lib/kafka/data
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_LOG_RETENTION_HOURS: 168
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      CLUSTER_ID: "Mk3OEYBSD34fcwNTJENDM2Qk"
-    restart: always
-    volumes:
-      - ./var/run/docker.sock:/var/run/docker.sock
-      - ./kafka_data2:/var/lib/kafka/data
-
-  redis:
-    image: redis:latest
-    container_name: myRedisContainer
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./redis_data:/data
-    restart: always
-
-#  prometheus:
-#    container_name: prometheus
-#    image: prom/prometheus
+#services:
+#  userservice:
+#    build: ./userservices
+#    container_name: userservice
 #    ports:
-#      - "9097:9090"
-#    volumes:
-#      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-#    networks:
-#      monitoring:
-
-#  grafana:
-#    image: grafana/grafana
-#    container_name: grafana
-#    ports:
-#      - "3000:3000"
+#      - "8083:8080"
 #    environment:
-#      - GF_SECURITY_ADMIN_USER=user
-#      - GF_SECURITY_ADMIN_PASSWORD=123
+#      SPRING_PROFILES_ACTIVE: docker
+#      REDIS_HOST: redis
+#      KAFKA_BOOTSTRAP_SERVERS: kafka:9095
+#      MYSQL_HOST: mysql
+#      MYSQL_PORT: 3306
+#      MYSQL_DATABASE: microserviceDb1
+#      MYSQL_ROOT_PASSWORD: Qwerty_12345
 #    depends_on:
-#      - prometheus
-#    networks:
-#      monitoring:
+#      - mysql
+#      - redis
+#      - kafka
+#    restart: always
 #
-#networks:
-#  monitoring:
-
-volumes:
-  mysql_data:
-  redis_data:
+#  chatservice:
+#    build: ./ChatService
+#    container_name: chatservice
+#    ports:
+#      - "8090:8080"
+#    environment:
+#      REDIS_HOST: redis
+#      KAFKA_BOOTSTRAP_SERVERS: kafka:9095
+#      MYSQL_HOST: mysql
+#      MYSQL_PORT: 3306
+#      MYSQL_DATABASE: chatServiceDb
+#      MYSQL_ROOT_PASSWORD: Qwerty_12345
+#    depends_on:
+#      - userservice
+#      - redis
+#      - kafka
+#    restart: always
+#
+#  messageservice:
+#    build: ./MessageService
+#    container_name: messageservice
+#    ports:
+#      - "8091:8080"
+#    environment:
+#      REDIS_HOST: redis
+#      KAFKA_BOOTSTRAP_SERVERS: kafka:9095
+#      MYSQL_HOST: mysql
+#      MYSQL_PORT: 3306
+#      MYSQL_DATABASE: messageDb
+#      MYSQL_ROOT_PASSWORD: Qwerty_12345
+#    depends_on:
+#      - userservice
+#      - redis
+#      - kafka
+#    restart: always
+#
+#  eurekaserver:
+#    build: ./eureka-server
+#    container_name: eurekaserver
+#    ports:
+#      - "8761:8761"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#    restart: always
+#
+#
+#  mysql:
+#    image: mysql:8.0
+#    container_name: mySqlContainer
+#    environment:
+#      MYSQL_DATABASE: microserviceDb1
+#      MYSQL_ROOT_PASSWORD: Qwerty_12345
+#    ports:
+#      - "3302:3306"
+#    volumes:
+#      - mysql_data:/var/lib/mysql
+#    restart: always
+#
+#  keycloak:
+#    image: quay.io/keycloak/keycloak:24.0.2
+#    container_name: keycloakDb1Container
+#    command: start-dev
+#    environment:
+#      KC_DB: mysql
+#      KC_DB_URL: jdbc:mysql://mysql:3306/keycloakDb1
+#      KC_DB_USERNAME: root
+#      KC_DB_PASSWORD: Qwerty_12345
+#      KEYCLOAK_ADMIN: admin
+#      KEYCLOAK_ADMIN_PASSWORD: admin
+#    ports:
+#      - "9093:8080"
+#    depends_on:
+#      - mysql
+#    restart: always
+#
+#  kafka:
+#    image: confluentinc/cp-kafka:latest
+#    hostname: kafka
+#    container_name: kafka
+#    ports:
+#      - "9095:9095"
+#      - "9096:9096"
+#    environment:
+#      KAFKA_KRAFT_MODE: "true"
+#      KAFKA_PROCESS_ROLES: controller, broker
+#      KAFKA_NODE_ID: 1
+#      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9096
+#      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9095, CONTROLLER://0.0.0.0:9096
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT, CONTROLLER:PLAINTEXT
+#      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+#      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9095
+#      KAFKA_LOG_DIRS: /var/lib/kafka/data
+#      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#      KAFKA_LOG_RETENTION_HOURS: 168
+#      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+#      CLUSTER_ID: "Mk3OEYBSD34fcwNTJENDM2Qk"
+#    restart: always
+#    volumes:
+#      - ./var/run/docker.sock:/var/run/docker.sock
+#      - ./kafka_data2:/var/lib/kafka/data
+#
+#  redis:
+#    image: redis:latest
+#    container_name: myRedisContainer
+#    ports:
+#      - "6379:6379"
+#    volumes:
+#      - ./redis_data:/data
+#    restart: always
+#
+##  prometheus:
+##    container_name: prometheus
+##    image: prom/prometheus
+##    ports:
+##      - "9097:9090"
+##    volumes:
+##      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+##    networks:
+##      monitoring:
+#
+##  grafana:
+##    image: grafana/grafana
+##    container_name: grafana
+##    ports:
+##      - "3000:3000"
+##    environment:
+##      - GF_SECURITY_ADMIN_USER=user
+##      - GF_SECURITY_ADMIN_PASSWORD=123
+##    depends_on:
+##      - prometheus
+##    networks:
+##      monitoring:
+##
+##networks:
+##  monitoring:
+#
+#volumes:
+#  mysql_data:
+#  redis_data:

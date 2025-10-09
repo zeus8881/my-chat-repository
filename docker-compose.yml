@@ -11,7 +11,9 @@ services:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
       MYSQL_DATABASE: microserviceDb1
-      MYSQL_ROOT_PASSWORD: Qwerty_12345
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Qwerty_12345
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/microserviceDb1
     depends_on:
       - mysql
       - redis
@@ -29,7 +31,9 @@ services:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
       MYSQL_DATABASE: chatServiceDb
-      MYSQL_ROOT_PASSWORD: Qwerty_12345
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Qwerty_12345
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/chatServiceDb
     depends_on:
       - userservice
       - redis
@@ -47,7 +51,9 @@ services:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
       MYSQL_DATABASE: messageDb
-      MYSQL_ROOT_PASSWORD: Qwerty_12345
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Qwerty_12345
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/messageDb
     depends_on:
       - userservice
       - redis

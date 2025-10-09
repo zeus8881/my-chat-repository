@@ -6,7 +6,7 @@ spring:
     username: root
     password: Qwerty_12345
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/microserviceDb1
+    url: jdbc:mysql://mysql:3306/microserviceDb1
 
   jpa:
     hibernate:

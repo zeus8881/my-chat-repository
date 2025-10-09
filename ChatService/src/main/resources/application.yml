@@ -7,7 +7,7 @@ spring:
       username: root
       password: Qwerty_12345
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:3306/chatServiceDb
+      jdbc-url: jdbc:mysql://mysql:3306/chatServiceDb
 
   jpa:
     hibernate:
