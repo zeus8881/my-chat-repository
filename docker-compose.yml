@@ -19,6 +19,7 @@ services:
       - mysql
       - redis
       - kafka
+    command: ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]
     restart: always
 
   chatservice:
@@ -39,6 +40,7 @@ services:
       - userservice
       - redis
       - kafka
+    command: ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]
     restart: always
 
   messageservice:
@@ -69,6 +71,7 @@ services:
       - "8761:8761"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+    command: ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]
     restart: always
 
 
