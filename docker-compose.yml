@@ -55,7 +55,7 @@ services:
       - userservice
       - redis
       - kafka
-    command: [ "./wait-for-it.sh", "mysql:3306", "--","./", "wait-for-eureka-sh", "eurekaserver:8761", "--",  "java", "-jar", "app.jar" ]
+    command: ["./wait-for-it.sh", "eurekaserver:8761", "--timeout=60", "--strict", "--", "java", "-jar", "app.jar"]
     restart: always
 
   messageservice:
