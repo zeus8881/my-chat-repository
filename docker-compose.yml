@@ -1,5 +1,16 @@
-
 services:
+  eurekaserver:
+    build: ./eureka-server
+    container_name: eurekaserver
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - mysql
+    command: [ "./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar" ]
+    restart: always
+
   userservice:
     build: ./userservices
     container_name: userservice
@@ -16,10 +27,12 @@ services:
       SPRING_DATASOURCE_PASSWORD: Qwerty_12345
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/microserviceDb1
     depends_on:
+      - eurekaserver
       - mysql
       - redis
       - kafka
-    command: ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]
+    command: [ "./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar" ]
+
     restart: always
 
   chatservice:
@@ -38,10 +51,11 @@ services:
       SPRING_DATASOURCE_PASSWORD: Qwerty_12345
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/chatServiceDb
     depends_on:
+      - eurekaserver
       - userservice
       - redis
       - kafka
-    command: ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]
+    command: [ "./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar" ]
     restart: always
 
   messageservice:
@@ -60,22 +74,12 @@ services:
       SPRING_DATASOURCE_PASSWORD: Qwerty_12345
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/messageDb
     depends_on:
+      - eurekaserver
       - userservice
       - redis
       - kafka
-    command: ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]
+    command: [ "./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar" ]
     restart: always
-
-  eurekaserver:
-    build: ./eureka-server
-    container_name: eurekaserver
-    ports:
-      - "8761:8761"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-    command: ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]
-    restart: always
-
 
   mysql:
     image: mysql:8.0
