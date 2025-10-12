@@ -181,8 +181,4 @@ volumes:
   mysql_data:
   redis_data:
 
-networks:
-  default:
-    name: my-chat-network
-    driver: bridge
 
