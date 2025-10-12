@@ -4,11 +4,10 @@ services:
     container_name: eurekaserver
     ports:
       - "8761:8761"
-    environment:
+    # environment:
       # SPRING_PROFILES_ACTIVE: docker
     depends_on:
       - mysql
-    command: [ "./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar" ]
     restart: always
 
   userservice:
@@ -30,8 +29,7 @@ services:
       - eurekaserver
       - mysql
       - redis
-      - kafka
-    command: [ "./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar" ]
+    command: ["./wait-for-it.sh", "eurekaserver:8761", "--timeout=60", "--strict", "--", "java", "-jar", "app.jar"]
 
     restart: always
 
@@ -54,7 +52,6 @@ services:
       - eurekaserver
       - userservice
       - redis
-      - kafka
     command: ["./wait-for-it.sh", "eurekaserver:8761", "--timeout=60", "--strict", "--", "java", "-jar", "app.jar"]
     restart: always
 
@@ -77,8 +74,7 @@ services:
       - eurekaserver
       - userservice
       - redis
-      - kafka
-    command: [ "./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar" ]
+    command: ["./wait-for-it.sh", "eurekaserver:8761", "--timeout=60", "--strict", "--", "java", "-jar", "app.jar"]
     restart: always
 
   mysql:
