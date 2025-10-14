@@ -21,27 +21,27 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: myRedisContainer
       port: 6379
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:9093/realms/DemoRealm
-      client:
-        registration:
-          keycloak:
-            client-id: mySpringBootClient
-            client-secret: TDIjCM1kwpRuoi4pvGUBqcnTryMrM94z
-            scope: openid
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-        provider:
-          keycloak:
-            issuer-uri: http://localhost:9093/realms/DemoRealm
-            user-name-attribute: preferred_username
 
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://keycloakDb1Container:9093/realms/DemoRealm
+#      client:
+#        registration:
+#          keycloak:
+#            client-id: mySpringBootClient
+#            client-secret: TDIjCM1kwpRuoi4pvGUBqcnTryMrM94z
+#            scope: openid
+#            authorization-grant-type: authorization_code
+#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+#        provider:
+#          keycloak:
+#            issuer-uri: http://keycloakDb1Container:9093/realms/DemoRealm
+#            user-name-attribute: preferred_username
 #  kafka:
 #    bootstrap-servers: localhost:9095
 #    producer:
@@ -62,27 +62,32 @@ logging:
     org.hibernate: warn
     web: INFO
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eurekaserver:8761/eureka/apps
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, metrics, info, prometheus
-  metrics:
-    distribution:
-      percentiles-histogram:
-        "[http.server.requests]": true
-  prometheus:
-    metrics:
-      export:
-        enabled: true
-  endpoint:
-    health:
-      show-details: always
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health, metrics, info, prometheus
+#  metrics:
+#    distribution:
+#      percentiles-histogram:
+#        "[http.server.requests]": true
+#  prometheus:
+#    metrics:
+#      export:
+#        enabled: true
+#  endpoint:
+#    health:
+#      show-details: always
 
 server:
   port: 8083
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    prefer-ip-address: true
