@@ -1,5 +1,6 @@
 server:
   port: 8761
+  address: 0.0.0.0
 
 eureka:
   instance:
@@ -7,3 +8,5 @@ eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
+    service-url:
+      defaultZone: http://eurekaserver:8761/eureka/

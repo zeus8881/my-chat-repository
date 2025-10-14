@@ -1,12 +1,26 @@
 spring:
   application:
     name: userservices
+  profiles:
+    active: docker
+
+  datasource:
+    url: jdbc:mysql://mysql:3306/microserviceDb1
+    username: root
+    password: Qwerty_12345
+
+  data:
+    redis:
+      host: redis
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI}
+      defaultZone: ${EUREKA_URI:http://eurekaserver:8761/eureka/}
     registerWithEureka: true
     fetchRegistry: true
   instance:
     prefer-ip-address: true
+
+
+
