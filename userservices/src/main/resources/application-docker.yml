@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: userservices
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI}
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    prefer-ip-address: true

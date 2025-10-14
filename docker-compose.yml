@@ -5,6 +5,7 @@ services:
     ports:
       - "8761:8761"
     environment:
+    SPRING_PROFILES_ACTIVE: docker
     depends_on:
       - mysql
     restart: always
@@ -16,6 +17,7 @@ services:
       - "8083:8080"
     environment:
       EUREKA_URI: http://eurekaserver:8761/eureka/
+      SPRING_PROFILES_ACTIVE: docker
       REDIS_HOST: redis
       KAFKA_BOOTSTRAP_SERVERS: kafka:9095
       MYSQL_HOST: mysql
@@ -24,7 +26,6 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: Qwerty_12345
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/microserviceDb1
-      SPRING_PROFILES_ACTIVE: 
     depends_on:
       - eurekaserver
       - mysql
@@ -37,6 +38,7 @@ services:
     ports:
       - "8090:8080"
     environment:
+      SPRING_PROFILES_ACTIVE: docker
       EUREKA_URI: http://eurekaserver:8761/eureka/
       REDIS_HOST: redis
       KAFKA_BOOTSTRAP_SERVERS: kafka:9095
@@ -58,6 +60,7 @@ services:
     ports:
       - "8091:8080"
     environment:
+      SPRING_PROFILES_ACTIVE: docker
       REDIS_HOST: redis  
       EUREKA_URI: http://eurekaserver:8761/eureka/
       KAFKA_BOOTSTRAP_SERVERS: kafka:9095
