@@ -29,6 +29,23 @@ logging:
     org.hibernate: warn
     web: INFO
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, info, prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  endpoint:
+    health:
+      show-details: always
+
 server:
   port: 8083
 
@@ -65,22 +82,7 @@ server:
 #    listener:
 #      ack-mode: record
 
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: health, metrics, info, prometheus
-#  metrics:
-#    distribution:
-#      percentiles-histogram:
-#        "[http.server.requests]": true
-#  prometheus:
-#    metrics:
-#      export:
-#        enabled: true
-#  endpoint:
-#    health:
-#      show-details: always
+
 
 
 

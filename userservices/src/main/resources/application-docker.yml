@@ -16,14 +16,6 @@ spring:
     redis:
       host: ${REDIS_HOST}
 
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: ${EUREKA_URI}
-#    registerWithEureka: true
-#    fetchRegistry: true
-#  instance:
-#    prefer-ip-address: true
 
 
 
