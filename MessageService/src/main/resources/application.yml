@@ -20,23 +20,23 @@ spring:
     open-in-view: true
     show-sql: true
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:9093/realms/DemoRealm
-      client:
-        registration:
-          keycloak:
-            client-id: mySpringBootClient
-            client-secret:
-            scope: openid
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-        provider:
-          keycloak:
-            issuer-uri: http://localhost:9093/realms/DemoRealm
-            user-name-attribute: preferred_username
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:9093/realms/DemoRealm
+#      client:
+#        registration:
+#          keycloak:
+#            client-id: mySpringBootClient
+#            client-secret:
+#            scope: openid
+#            authorization-grant-type: authorization_code
+#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+#        provider:
+#          keycloak:
+#            issuer-uri: http://localhost:9093/realms/DemoRealm
+#            user-name-attribute: preferred_username
 
 #  kafka:
 #    bootstrap-servers: localhost:9095
@@ -53,16 +53,16 @@ spring:
 #    listener:
 #      ack-mode: record
 
-logging:
-  level:
-    org.hibernate: warn
-    web: INFO
+#logging:
+#  level:
+#    org.hibernate: warn
+#    web: INFO
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
-    fetch-registry: true
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+#    fetch-registry: true
 
 management:
   endpoints:

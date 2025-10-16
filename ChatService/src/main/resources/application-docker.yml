@@ -3,7 +3,7 @@ spring:
     discovery:
       enabled: false
   application:
-    name: userservices
+    name: ChatService
   profiles:
     active: docker
 
@@ -12,18 +12,10 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
 
-  data:
-    redis:
-      host: ${REDIS_HOST}
+redis:
+  host: ${REDIS_HOST}
 
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: ${EUREKA_URI}
-#    registerWithEureka: true
-#    fetchRegistry: true
-#  instance:
-#    prefer-ip-address: true
-
+userservice:
+  baseUrl: http://userservice:8080
 
 

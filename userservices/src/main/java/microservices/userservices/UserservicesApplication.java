@@ -12,7 +12,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import java.time.Duration;
 
 @SpringBootApplication
-@EnableDiscoveryClient
 public class UserservicesApplication {
 
     public static void main(String[] args) {

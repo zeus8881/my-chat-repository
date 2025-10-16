@@ -24,6 +24,14 @@ spring:
       host: myRedisContainer
       port: 6379
 
+logging:
+  level:
+    org.hibernate: warn
+    web: INFO
+
+server:
+  port: 8083
+
 
 #  security:
 #    oauth2:
@@ -57,11 +65,6 @@ spring:
 #    listener:
 #      ack-mode: record
 
-logging:
-  level:
-    org.hibernate: warn
-    web: INFO
-
 #management:
 #  endpoints:
 #    web:
@@ -79,15 +82,13 @@ logging:
 #    health:
 #      show-details: always
 
-server:
-  port: 8083
 
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
-    registerWithEureka: true
-    fetchRegistry: true
-  instance:
-    prefer-ip-address: true
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+#    registerWithEureka: true
+#    fetchRegistry: true
+#  instance:
+#    prefer-ip-address: true

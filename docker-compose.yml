@@ -1,14 +1,15 @@
 services:
-  eurekaserver:
-    build: ./eureka-server
-    container_name: eurekaserver
-    ports:
-      - "8761:8761"
-    environment:
-    SPRING_PROFILES_ACTIVE: docker
-    depends_on:
-      - mysql
-    restart: always
+
+  # eurekaserver:
+  #   build: ./eureka-server
+  #   container_name: eurekaserver
+  #   ports:
+  #     - "8761:8761"
+  #   environment:
+  #   SPRING_PROFILES_ACTIVE: docker
+  #   networks:
+  #     - eureka_net
+  #   restart: always
 
   userservice:
     build: ./userservices
@@ -16,8 +17,6 @@ services:
     ports:
       - "8083:8080"
     environment:
-      EUREKA_URI: http://eurekaserver:8761/eureka/
-      SPRING_PROFILES_ACTIVE: docker
       REDIS_HOST: redis
       KAFKA_BOOTSTRAP_SERVERS: kafka:9095
       MYSQL_HOST: mysql
@@ -26,8 +25,11 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: Qwerty_12345
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/microserviceDb1
+      USERSERVICES_BASE_URL: http://userservice:8080
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - app_net
     depends_on:
-      - eurekaserver
       - mysql
       - redis
     restart: always
@@ -39,7 +41,7 @@ services:
       - "8090:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      EUREKA_URI: http://eurekaserver:8761/eureka/
+      USERSERVICES_BASE_URL: http://userservice:8080
       REDIS_HOST: redis
       KAFKA_BOOTSTRAP_SERVERS: kafka:9095
       MYSQL_HOST: mysql
@@ -48,8 +50,9 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: Qwerty_12345
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/chatServiceDb
+    networks:
+      - app_net
     depends_on:
-      - eurekaserver
       - userservice
       - redis
     restart: always
@@ -62,7 +65,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
       REDIS_HOST: redis  
-      EUREKA_URI: http://eurekaserver:8761/eureka/
+      USERSERVICES_BASE_URL: http://userservice:8080
       KAFKA_BOOTSTRAP_SERVERS: kafka:9095
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
@@ -70,8 +73,9 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: Qwerty_12345
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/messageDb
+    networks:
+      - app_net
     depends_on:
-      - eurekaserver
       - userservice
       - redis
     restart: always
@@ -100,6 +104,8 @@ services:
       KC_DB_PASSWORD: Qwerty_12345
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
+      networks:
+        - eureka_net
     ports:
       - "9093:8080"
     depends_on:
@@ -169,6 +175,9 @@ services:
 
 # networks:
 #   monitoring:
+networks:
+  app_net:
+    driver: bridge
 
 
 
